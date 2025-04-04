@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 class BackgroundCircle extends StatefulWidget {
-  const BackgroundCircle({super.key});
+  final AnimationController controller;
+  const BackgroundCircle({super.key, required this.controller});
 
   @override
   State<BackgroundCircle> createState() => _BackgroundCircleState();
@@ -46,90 +47,97 @@ class _BackgroundCircleState extends State<BackgroundCircle>
     );
 
     return Stack(
-      children: [
-        Positioned(
-          right: -(size.width * 1.2 - size.width) / 2,
-          top: -70,
-          child: CustomPaint(
-                size: Size(size.width * 1.2, size.height),
-                painter: CirclePainter(),
-              )
-              .animate(delay: 800.ms)
-              .fade(duration: 700.ms, curve: Curves.fastOutSlowIn)
-              .scale(
-                begin: Offset(0.8, 0.8),
-                end: Offset(1, 1),
-                duration: 700.ms,
-                curve: Curves.fastOutSlowIn,
-              ),
-        ),
-        AnimatedBuilder(
-          animation: _animation,
-          builder: (context, child) {
-            return Stack(
-              children: [
-                _buildOrbitingStar(
-                      center,
-                      circleRadius,
-                      _animation.value,
-                      StarOne(),
-                      0,
-                    )
-                    .animate(delay: 1400.ms)
-                    .scale(
-                      begin: Offset(0, 0),
-                      end: Offset(1, 1),
-                      duration: 500.ms,
-                      curve: Curves.fastOutSlowIn,
-                    ),
-                _buildOrbitingStar(
-                      center,
-                      circleRadius,
-                      _animation.value + pi * 1.5,
-                      StarTwo(),
-                      1,
-                    )
-                    .animate(delay: 1450.ms)
-                    .scale(
-                      begin: Offset(0, 0),
-                      end: Offset(1, 1),
-                      duration: 500.ms,
-                      curve: Curves.fastOutSlowIn,
-                    ),
-                _buildOrbitingStar(
-                      center,
-                      circleRadius,
-                      _animation.value + 2 * pi / 2.7,
-                      StarOne(),
-                      2,
-                    )
-                    .animate(delay: 1500.ms)
-                    .scale(
-                      begin: Offset(0, 0),
-                      end: Offset(1, 1),
-                      duration: 500.ms,
-                      curve: Curves.fastOutSlowIn,
-                    ),
-                _buildOrbitingStar(
-                      center,
-                      circleRadius,
-                      _animation.value + pi,
-                      StarTwo(),
-                      3,
-                    )
-                    .animate(delay: 1550.ms)
-                    .scale(
-                      begin: Offset(0, 0),
-                      end: Offset(1, 1),
-                      duration: 500.ms,
-                      curve: Curves.fastOutSlowIn,
-                    ),
-              ],
-            );
-          },
-        ),
-      ],
-    );
+          children: [
+            Positioned(
+              right: -(size.width * 1.2 - size.width) / 2,
+              top: -70,
+              child: CustomPaint(
+                    size: Size(size.width * 1.2, size.height),
+                    painter: CirclePainter(),
+                  )
+                  .animate(delay: 800.ms)
+                  .fade(duration: 700.ms, curve: Curves.fastOutSlowIn)
+                  .scale(
+                    begin: Offset(0.8, 0.8),
+                    end: Offset(1, 1),
+                    duration: 700.ms,
+                    curve: Curves.fastOutSlowIn,
+                  ),
+            ),
+            AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return Stack(
+                  children: [
+                    _buildOrbitingStar(
+                          center,
+                          circleRadius,
+                          _animation.value,
+                          StarOne(),
+                          0,
+                        )
+                        .animate(delay: 1400.ms)
+                        .scale(
+                          begin: Offset(0, 0),
+                          end: Offset(1, 1),
+                          duration: 500.ms,
+                          curve: Curves.fastOutSlowIn,
+                        ),
+                    _buildOrbitingStar(
+                          center,
+                          circleRadius,
+                          _animation.value + pi * 1.5,
+                          StarTwo(),
+                          1,
+                        )
+                        .animate(delay: 1450.ms)
+                        .scale(
+                          begin: Offset(0, 0),
+                          end: Offset(1, 1),
+                          duration: 500.ms,
+                          curve: Curves.fastOutSlowIn,
+                        ),
+                    _buildOrbitingStar(
+                          center,
+                          circleRadius,
+                          _animation.value + 2 * pi / 2.7,
+                          StarOne(),
+                          2,
+                        )
+                        .animate(delay: 1500.ms)
+                        .scale(
+                          begin: Offset(0, 0),
+                          end: Offset(1, 1),
+                          duration: 500.ms,
+                          curve: Curves.fastOutSlowIn,
+                        ),
+                    _buildOrbitingStar(
+                          center,
+                          circleRadius,
+                          _animation.value + pi,
+                          StarTwo(),
+                          3,
+                        )
+                        .animate(delay: 1550.ms)
+                        .scale(
+                          begin: Offset(0, 0),
+                          end: Offset(1, 1),
+                          duration: 500.ms,
+                          curve: Curves.fastOutSlowIn,
+                        ),
+                  ],
+                );
+              },
+            ),
+          ],
+        )
+        .animate(controller: widget.controller, autoPlay: false)
+        .moveX(
+          begin: 0,
+          end: -size.width * 1.5,
+          duration: 1200.ms,
+          curve: Curves.fastOutSlowIn,
+        );
   }
 
   Widget _buildOrbitingStar(

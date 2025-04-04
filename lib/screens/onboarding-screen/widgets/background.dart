@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:cosmetics_store/utils/colours.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class Background extends StatelessWidget {
-  const Background({super.key});
+  final AnimationController controller;
+  const Background({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class Background extends StatelessWidget {
             Colours.primaryColor,
             Alignment.centerLeft,
             Alignment.centerRight,
+            controller,
           ),
         ),
         Positioned(
@@ -30,6 +33,7 @@ class Background extends StatelessWidget {
             Colours.primaryColor,
             Alignment.centerLeft,
             Alignment.centerRight,
+            controller,
           ),
         ),
         Positioned(
@@ -41,6 +45,7 @@ class Background extends StatelessWidget {
             Colours.secondaryColor,
             Alignment.topRight,
             Alignment.bottomLeft,
+            controller,
           ),
         ),
         Positioned(
@@ -52,6 +57,7 @@ class Background extends StatelessWidget {
             Colours.secondaryColor,
             Alignment.topRight,
             Alignment.bottomLeft,
+            controller,
           ),
         ),
         Positioned(
@@ -63,6 +69,7 @@ class Background extends StatelessWidget {
             Colours.secondaryColor.withValues(alpha: 0.4),
             Alignment.topRight,
             Alignment.bottomLeft,
+            controller,
           ),
         ),
       ],
@@ -75,19 +82,27 @@ class Background extends StatelessWidget {
     Color color,
     Alignment begin,
     Alignment end,
+    AnimationController controller,
   ) {
     return BackdropFilter(
       filter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
       child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [color, color.withValues(alpha: 0.3)],
+            width: width,
+            height: height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [color, color.withValues(alpha: 0.3)],
+              ),
+              borderRadius: BorderRadius.circular(height / 2),
+            ),
+          )
+          .animate(controller: controller, autoPlay: false)
+          .fade(
+            begin: 1,
+            end: 0,
+            duration: 1200.ms,
+            curve: Curves.fastOutSlowIn,
           ),
-          borderRadius: BorderRadius.circular(height / 2),
-        ),
-      ),
     );
   }
 }

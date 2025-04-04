@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colours.blackColor),
       ),
       onGenerateRoute: routesGenerator,
-      home: const OnboardingAnimationScreen(),
+      home: OnboardingAnimationScreen(),
     );
   }
 }

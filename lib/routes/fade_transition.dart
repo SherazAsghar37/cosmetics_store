@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 
 class FadeInTransition extends PageRouteBuilder {
   final Widget widget;
-  FadeInTransition({required this.widget})
+  final int? duration;
+  FadeInTransition({required this.widget, this.duration})
     : super(
         pageBuilder: (context, animation, secondaryAnimation) => widget,
-        transitionDuration: const Duration(milliseconds: 1500),
+        transitionDuration: Duration(milliseconds: duration ?? 1500),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           final opacityTween = Tween(
             begin: 0.0,

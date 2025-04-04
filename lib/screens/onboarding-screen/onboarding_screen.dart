@@ -15,7 +15,17 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
+  late AnimationController _controller1;
+  late AnimationController _controller2;
+
+  @override
+  void initState() {
+    _controller1 = AnimationController(vsync: this);
+    _controller2 = AnimationController(vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -27,8 +37,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
         height: size.height,
         child: Stack(
           children: [
-            Background(),
-            BackgroundCircle(),
+            Background(controller: _controller1),
+
+            BackgroundCircle(controller: _controller2),
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -40,12 +51,26 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ChildFlower(),
+                        ChildFlower(controller: _controller2),
                         SizedBox(height: size.height * 0.19),
-                        OnboardingContent(),
+                        OnboardingContent(
+                          controller1: _controller1,
+                          controller2: _controller2,
+                        ),
                       ],
                     ),
-                    OnboardingNavigator(),
+                    OnboardingNavigator(
+                      controller: _controller2,
+                      onLastPage: () async {
+                        _controller1.forward();
+                        await Future.delayed(
+                          const Duration(milliseconds: 150),
+                          () {
+                            _controller2.forward();
+                          },
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
